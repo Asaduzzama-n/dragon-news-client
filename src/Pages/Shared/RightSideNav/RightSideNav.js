@@ -1,23 +1,32 @@
 import React, { useContext } from 'react';
 import { Button, ButtonGroup, ListGroup } from 'react-bootstrap';
 import { FaGoogle, FaGithub, FaFacebook, FaTwitter, FaWhatsapp, FaTwitch } from "react-icons/fa";
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider';
 import BrandCarousel from '../BrandCarousel/BrandCarousel';
 
 const RightSideNav = () => {
 
     const {googleLogin} = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
     const handleGoogleLogin = () =>{
         googleLogin()
         .then(userCredential => {
             const user = userCredential.user;
+            navigate(from,{replace:true});
             console.log(user)
         })
         .catch(error =>{
             console.error(error.message);
         })
+        
     }
+
+    
 
     return (
         <div>

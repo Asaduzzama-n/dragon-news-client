@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const Signup = () => {
-    const {createUser,updateUserProfile} = useContext(AuthContext);
+    const {createUser,updateUserProfile,verifyUser} = useContext(AuthContext);
 
     const handleFormSubmit = (event) =>{
         event.preventDefault();
@@ -15,23 +16,15 @@ const Signup = () => {
         const email = form.email.value;
         const password = form.password.value;
 
-        console.log("SIGNUP",email,password);
-
         
-
         createUser(email,password)
         .then(userCredential =>{
             const user = userCredential.user;
-            const profile = handleProfileUpdate(name,imgUrl);
-
-            updateUserProfile(profile)
-            .then(()=>{
-                console.log("Profile Update");
-            })
-            .catch(error => {
-                console.error(error.message);
-            })
-
+            form.reset();
+            //UPDATE USER PROFILE
+            handleProfileUpdate(name,imgUrl);
+            handleUserVerify();
+            toast.error('Please verify your email before login.');
             console.log("FROM SIGNUP",user);
         })
         .catch(error => {
@@ -39,9 +32,14 @@ const Signup = () => {
         })
 
         const handleProfileUpdate = (name,imgUrl) =>{
-            return {displayName: name,photoURL:imgUrl};
+            updateUserProfile({displayName: name,photoURL:imgUrl})
+            .then(()=>{console.log("Profile Update");})
+            .catch(error => {console.error(error.message);})
         }
-        
+
+        const handleUserVerify = () =>{
+            verifyUser()
+        }
     }
     
     return (

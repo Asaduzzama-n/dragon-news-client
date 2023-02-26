@@ -11,6 +11,7 @@ const PrivateRoutes = ({children}) => {
     if(loading) return <Spinner animation="border" variant="primary" />
 
     if(user && user.uid) return children;
+    
 
     return <Navigate to={'/login'} state={{from:location}}></Navigate>
 };

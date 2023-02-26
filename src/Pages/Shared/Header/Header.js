@@ -51,8 +51,9 @@ const Header = () => {
                     {/* <Button onClick={handleLogout} variant="">Logout</Button>
                     <Link to={'/login'}><Button variant="">Login</Button></Link> */}
                 </div>
-                <div>
+                <div className='d-flex align-items-center'>
                     <FaUserAlt></FaUserAlt>
+                    <p className='mx-2'><small>{user?.displayName}</small></p>
                 </div>
             </Container>
         </Navbar>
